@@ -67,7 +67,6 @@ void intialize(){
             board[i][j]=0;
         }
     }
-    board[1][1]=1;
 }
 void display_board(){
     for(int i=0;i<3;i++){
@@ -78,7 +77,7 @@ void display_board(){
         }
         cout<<endl;
         for(int j=0;j<2;j++){
-            cout<<".... ....";
+            cout<<"........";
         }
         cout<<endl;
     }
