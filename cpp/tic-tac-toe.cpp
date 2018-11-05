@@ -167,7 +167,6 @@ void display_board(){
 }
 int player()//returns player move
 
-void play()
 
 
 int main(){
