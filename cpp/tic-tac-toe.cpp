@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 int board[3][3];
-struct best_move
+struct move
 {
     int row;
     int column;
@@ -17,18 +17,20 @@ int current_player(){
 
 int check(){
     for(int i=0;i<3;i++){
-        int sum=0;
+        int sumc=0, sumr=0;
         for(int j=0;j<3;j++){
-            sum+=board[i][j];
+            sumc+=board[i][j];
+	    sumr+=board[j][i]; 
         }
-        if(sum==3){
+        if(sumc==3 || sumr==3){
             return  10;
         }
-        else if(sum==-3){
+        else if(sumc==-3|| sumr==-3){
             return -10;
         }
     }
-    for(int i=0;i<3;i++){
+
+  /*for(int i=0;i<3;i++){	**REDUNDANT**
         int sum=0;
         for(int j=0;j<3;j++){
             sum+=board[j][i];
@@ -40,17 +42,21 @@ int check(){
             return -10;
         }
     }
-    int sum_0=0;
+  */
+
+    int sum_md=0, sum_od=0;
     for(int i=0;i<3;i++){
-        sum_0+=board[i][i];
+        sum_md+=board[i][i];
+	sum_od+=board[i][2-i];
     }
-    if(sum_0==3){
+    if(sum_md==3 || sum_od==3){
         return +10;
     }
-    else if(sum_0==-3){
+    else if(sum_md==-3|| sum_od==-3){
         return -10;
     }
-    sum_0=0;
+
+  /*sum_0=0;			**REDUNDANT**
     for(int i=0;i<3;i++){
         sum_0+=board[i][2-i];
     }
@@ -61,7 +67,7 @@ int check(){
     else if(sum_0==-3){
         return -10;
     }
-
+  */
     return 0;
 }
 bool checkmoves()//checks if any free spaces are available
@@ -69,19 +75,19 @@ bool checkmoves()//checks if any free spaces are available
     for(int i=0; i<3; i++)
         for(int j=0;j<3;j++)
             if(board[i][j]==0)
-                return true;
+                return true;	//Free space available.
     return false;
 }
 
 int minimax( bool max_move, int level=0)//checks all possible solutions and returns the value of currentboard
 {
     int value= check();
-    if (value==10)
+    if (value==10)		//X wins.
         return value;
-    if (value==-10)
+    if (value==-10)		//O wins.
         return value;
     if (checkmoves()==false)
-        return 0;
+        return 0;		//Draw
     if(max_move)
     {
         int best_score=-100;
@@ -117,10 +123,10 @@ int minimax( bool max_move, int level=0)//checks all possible solutions and retu
 }
     }
 
-best_move find_best()//return best move for the current player
+struct move find_best()//return best move for the current player as a structure 'move'
 {
     int best_value=-100;
-    best_move best;
+    struct move best;
     best.row=-1;
     best.column=-1;
 
@@ -176,19 +182,26 @@ void display_board(){
     }
 }
 
-void input(){
-	int i, j, p = 0 ;
+void us_input(){		//User Input Method
+	struct move player ;
 	cout<<"\nEnter Row: " ;
-	cin>> i;
+	cin>> player.row;
 	cout<<"\nEnter Collumn: " ;
-	cin>> j;
-	board[i-1][j-1] = current_player()	;
+	cin>> player.column;
+	board[player.row-1][player.column-1] = current_player()	;
 
 
 
 } //End of input()
 
-//int player()//returns player move
+void ai_input(){
+	struct move ai;
+	ai = find_best() ;
+	board[ai.row][ai.column] = current_player();
+	cout<<ai.row<<' ' <<ai.column ;	
+	
+}
+
 
 
 
@@ -196,8 +209,8 @@ void input(){
 int main(){
     intialize();
     display_board();
-    input();
-    input() ;
+    us_input();
+    ai_input();
     display_board();
     return 0;
 }
