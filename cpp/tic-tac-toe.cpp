@@ -5,7 +5,7 @@ struct move
 {
     int row;
     int column;
-};
+}player, ai;
 
 int p = 1;	//This will be a player turn counter. (private)
 int current_player(){
@@ -60,7 +60,6 @@ int check(){
     for(int i=0;i<3;i++){
         sum_0+=board[i][2-i];
     }
-
     if(sum_0==3){
         return +10;
     }
@@ -183,7 +182,6 @@ void display_board(){
 }
 
 void us_input(){		//User Input Method
-	struct move player ;
 	cout<<"\nEnter Row: " ;
 	cin>> player.row;
 	cout<<"\nEnter Collumn: " ;
@@ -195,7 +193,6 @@ void us_input(){		//User Input Method
 } //End of input()
 
 void ai_input(){
-	struct move ai;
 	ai = find_best() ;
 	board[ai.row][ai.column] = current_player();
 	cout<<ai.row<<' ' <<ai.column ;	
@@ -209,9 +206,11 @@ void ai_input(){
 int main(){
     intialize();
     display_board();
-    us_input();
-    ai_input();
-    display_board();
+    while(check()==0){
+    	us_input();
+    	ai_input();
+    	display_board();
+    }
     return 0;
 }
 
