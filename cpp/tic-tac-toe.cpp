@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 int board[3][3];
-struct move
-{
+struct move{
     int row;
     int column;
 }player, ai;
